@@ -8,6 +8,7 @@ import {
 
 export class SearchForm extends Component<{
   query: string;
+  onInputChange: (inputValue: string) => void;
   onSubmit: (e: SubmitEvent<HTMLFormElement>, inputValue: string) => void;
 }> {
   state = {
@@ -15,6 +16,7 @@ export class SearchForm extends Component<{
   };
   handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ inputValue: e.target.value });
+    this.props.onInputChange(e.target.value);
     if (e.target.value.trim() === "") {
       localStorage.removeItem("query");
     } else {
