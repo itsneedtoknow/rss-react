@@ -11,10 +11,15 @@ export class SearchForm extends Component<{
   onSubmit: (e: SubmitEvent<HTMLFormElement>, inputValue: string) => void;
 }> {
   state = {
-    inputValue: "",
+    inputValue: localStorage.getItem("query") ?? "",
   };
   handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     this.setState({ inputValue: e.target.value });
+    if (e.target.value.trim() === "") {
+      localStorage.removeItem("query");
+    } else {
+      localStorage.setItem("query", e.target.value);
+    }
   };
   handleSubmitForm = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();

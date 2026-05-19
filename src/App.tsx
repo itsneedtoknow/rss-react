@@ -11,10 +11,11 @@ class App extends Component {
     console.log(newQuery);
   };
   render(): ReactNode {
+    console.log(localStorage.getItem("query"));
     const { query } = this.state;
     return (
       <>
-        <section>
+        <section className="search-section search">
           <div className="search__form">
             <div className="container-wrapper">
               <SearchForm onSubmit={this.handleSubmit} query={query} />
@@ -24,6 +25,13 @@ class App extends Component {
             <div className="container-wrapper">
               <h2>Results</h2>
               <ul className="result__list">
+                <li className="result__item">
+                  <h3 className="item__name">Item name</h3>
+                  <div className="item__description">
+                    <p>description</p>
+                    <p>more description</p>
+                  </div>
+                </li>
                 <li className="result__item">
                   <h3 className="item__name">Item name</h3>
                   <div className="item__description">
