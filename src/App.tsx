@@ -3,7 +3,11 @@ import "./App.css";
 import { SearchForm } from "./components/SearchForm";
 import { SearchResults } from "./components/SearchResults";
 import { SearchItems } from "./data/searchItems";
-
+import { Button } from "./UI/Button";
+import { ErrorBoundary } from "./components/ErrorBoundary";
+const BuggyComponent = () => {
+  throw new Error("💥 Some kind of error.");
+};
 class App extends Component {
   state = {
     query: localStorage.getItem("query") ?? "",
@@ -48,6 +52,11 @@ class App extends Component {
           </div>
 
           <SearchResults items={this.state.filteredResults} />
+
+          <ErrorBoundary>
+            <BuggyComponent />
+            <Button btnText="Error btn" />
+          </ErrorBoundary>
         </section>
       </>
     );
