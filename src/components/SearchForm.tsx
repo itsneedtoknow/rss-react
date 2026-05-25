@@ -1,45 +1,41 @@
 import { Button } from "../UI/Button";
-import {
-  Component,
-  type ChangeEvent,
-  type SubmitEvent,
-  type ReactNode,
-} from "react";
+import { type ChangeEvent, type SubmitEvent, useState } from "react";
 
-export class SearchForm extends Component<{
+export function SearchForm({
+  query,
+  onInputChange,
+  onSubmit,
+}: {
   query: string;
   onInputChange: (inputValue: string) => void;
   onSubmit: (e: SubmitEvent<HTMLFormElement>, inputValue: string) => void;
-}> {
-  state = {
-    inputValue: localStorage.getItem("query") ?? "",
+}) {
+  const [inputValue, setInputValue] = useState(query);
+
+  const handleSubmitForm = (e: SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(e, inputValue);
   };
-  handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    this.setState({ inputValue: e.target.value });
-    this.props.onInputChange(e.target.value);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    onInputChange(e.target.value);
+    setInputValue(e.target.value);
     if (e.target.value.trim() === "") {
       localStorage.removeItem("query");
     } else {
       localStorage.setItem("query", e.target.value);
     }
   };
-  handleSubmitForm = (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    this.props.onSubmit(e, this.state.inputValue);
-  };
-  render(): ReactNode {
-    const { inputValue } = this.state;
-
-    return (
-      <form action="" onSubmit={this.handleSubmitForm}>
-        <input
-          value={inputValue}
-          type="search"
-          placeholder="Type to search"
-          onChange={this.handleInputChange}
-        />
-        <Button btnText={"Search"} btnType={"submit"} />
-      </form>
-    );
-  }
+  return (
+    <form action="" onSubmit={handleSubmitForm}>
+      <input
+        value={inputValue}
+        type="search"
+        placeholder="Type to search"
+        onChange={(e) => {
+          handleInputChange(e);
+        }}
+      />
+      <Button btnText={"Search"} btnType={"submit"} />
+    </form>
+  );
 }

@@ -1,16 +1,15 @@
-import { Component, type MouseEvent } from "react";
-
-export class Button extends Component<{
+export function Button({
+  btnText,
+  btnType,
+  onClick,
+}: {
   btnText: string;
-  btnType?: "submit" | "button" | "reset";
-  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
-}> {
-  render() {
-    const { btnText, btnType, onClick } = this.props;
-    return (
-      <button type={btnType} onClick={onClick}>
-        {btnText}
-      </button>
-    );
-  }
+  btnType?: "button" | "submit" | "reset";
+  onClick?: () => void;
+}) {
+  return (
+    <button type={btnType} onClick={onClick}>
+      {btnText}
+    </button>
+  );
 }
