@@ -1,0 +1,12 @@
+.resultsWrapper {
+  display: flex;
+  gap: 32px;
+}
+.result__list {
+  flex-grow: 1;
+}
+.details {
+  max-width: 50%;
+  flex-shrink: 1;
+  flex-grow: 1;
+}

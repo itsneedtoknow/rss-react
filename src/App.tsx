@@ -3,6 +3,7 @@ import "./App.css";
 import { SearchForm } from "./components/SearchForm";
 import { SearchResults } from "./components/SearchResults";
 import { SearchItems } from "./data/searchItems";
+//import { Outlet } from "react-router-dom";
 import { type SearchItem } from "./data/searchItems";
 import { Button } from "./UI/Button";
 import { ErrorBoundary } from "./components/ErrorBoundary";
@@ -50,6 +51,7 @@ function App() {
           <BuggyComponent />
           <Button btnText="Error btn" />
         </ErrorBoundary>
+        {/* <Outlet /> */}
       </section>
     </>
   );
