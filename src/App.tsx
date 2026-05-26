@@ -7,17 +7,34 @@ import { SearchItems } from "./data/searchItems";
 import { type SearchItem } from "./data/searchItems";
 import { Button } from "./UI/Button";
 import { ErrorBoundary } from "./components/ErrorBoundary";
-const BuggyComponent = () => {
-  throw new Error("💥 Some kind of error.");
+import { Pagination } from "./components/Pagination";
+import { useSearchParams } from "react-router-dom";
+const BuggyComponent = ({ isbuggy }: { isbuggy: boolean }) => {
+  if (isbuggy == true) throw new Error("💥 Some kind of error.");
+  return null;
 };
 function App() {
   const [query, setQuery] = useState(localStorage.getItem("query") ?? "");
   const [filteredResults, setFilteredResults] = useState<SearchItem[]>([]);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isBuggy, setIsBuggy] = useState(false);
+  const currentPage = Number(searchParams.get("page") ?? "1");
+  const ITEMS_PER_PAGE: number = 2;
+  const indexOfFirstPageItem = (currentPage - 1) * ITEMS_PER_PAGE;
+  const indexOfLastPageItem = indexOfFirstPageItem + ITEMS_PER_PAGE;
   const handleSubmit = (e: SubmitEvent, val: string) => {
     setQuery(val);
+    setSearchParams((prev) => {
+      prev.set("page", "1");
+      return prev;
+    });
   };
   const handleLiveInputChange = (currentValue: string) => {
     setQuery(currentValue);
+    setSearchParams((prev) => {
+      prev.set("page", "1");
+      return prev;
+    });
   };
   useEffect(() => {
     const handleFilter = (searchQuery: string) => {
@@ -30,10 +47,14 @@ function App() {
           item.description.toLowerCase().includes(searchQuery.toLowerCase())
         );
       });
+
       setFilteredResults(filtered);
     };
     handleFilter(query);
   }, [query]);
+  function handleBuggyClick() {
+    setIsBuggy(true);
+  }
   return (
     <>
       <section className="search-section search">
@@ -46,12 +67,20 @@ function App() {
             />
           </div>
         </div>
-        <SearchResults items={filteredResults} />
+        <SearchResults
+          items={filteredResults.slice(
+            indexOfFirstPageItem,
+            indexOfLastPageItem,
+          )}
+        />
+        <Pagination
+          activePage={currentPage}
+          totalPages={Math.ceil(filteredResults.length / ITEMS_PER_PAGE)}
+        />
         <ErrorBoundary>
-          <BuggyComponent />
-          <Button btnText="Error btn" />
+          <BuggyComponent isbuggy={isBuggy} />
+          <Button btnText="Error btn" onClick={handleBuggyClick} />
         </ErrorBoundary>
-        {/* <Outlet /> */}
       </section>
     </>
   );

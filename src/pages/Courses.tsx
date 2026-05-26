@@ -15,14 +15,14 @@ export function Courses() {
   if (!currentCourse) {
     return (
       <div style={{ padding: "20px" }}>
-        <h2>Курс не найден</h2>
+        <h3>Курс не найден</h3>
         <p>К сожалению, запрашиваемый модуль еще находится в разработке.</p>
       </div>
     );
   }
   return (
     <>
-      <h1>{currentCourse.name}</h1>
+      <h3>{currentCourse.name}</h3>
       <div>{currentCourse.description}</div>
     </>
   );
